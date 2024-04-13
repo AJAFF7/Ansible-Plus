@@ -1,7 +1,7 @@
 ---
-- hosts: all
+- hosts: VM-1
 
-  become: true
+  become: no
   tasks:
     - name: update apt packages
       apt:
