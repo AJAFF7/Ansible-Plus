@@ -1,10 +1,11 @@
 ---
 - hosts: all
-
-  become: true
-
+  become: yes
   tasks:
-    - name: APT Package Updater
+    - name: Perform system updates with a delay
       apt:
         upgrade: yes
         update_cache: yes
+      async: 300  # Wait for 300 seconds (adjust as needed)
+      poll: 0
+
