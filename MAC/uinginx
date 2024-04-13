@@ -1,0 +1,8 @@
+---
+- hosts: mac
+  become: no
+  tasks:
+    - name: Remove Nginx from Mac
+      homebrew:
+        name: nginx
+        state: absent
