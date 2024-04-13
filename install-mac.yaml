@@ -5,5 +5,5 @@
     - name: install nginx
       homebrew:
         name: nginx
-#        state: absent
-        state: present
+        state: absent
+ #       state: present
