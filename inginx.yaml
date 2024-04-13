@@ -1,8 +1,8 @@
 ---
 - hosts: mac
-  become: no
+  become: yes
   tasks:
-    - name: Install Nginx from Mac
-      homebrew:
+    - name: Install Nginx from Ubuntu
+      apt:
         name: nginx
         state: present
