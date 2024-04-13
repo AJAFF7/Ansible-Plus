@@ -1,0 +1,8 @@
+---
+- hosts: mac
+  become: no
+  tasks:
+    - name: Install Nginx from Mac
+      homebrew:
+        name: nginx
+        state: present
