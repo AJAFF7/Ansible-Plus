@@ -1,13 +1,16 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Update package list
+    - name: Update package list with delay
       apt:
         update_cache: yes
+      async: 300  # Wait for 300 seconds (adjust as needed)
+      poll: 0
 
     - name: Install Apache2
       apt:
         name: apache2
         state: present
+
 
 
