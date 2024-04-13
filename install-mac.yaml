@@ -2,8 +2,7 @@
 - hosts: mac
   become: true
   tasks:
-    - name: install nginx
+    - name: Remove Nginx from Mac
       homebrew:
         name: nginx
         state: absent
- #       state: present
