@@ -4,6 +4,7 @@
   tasks:
     - name: Install Apache2
       apt:
-        name: apache2
+        name: Install Apache2
+        command: apt-get install -y apache2   
         state: present
 
