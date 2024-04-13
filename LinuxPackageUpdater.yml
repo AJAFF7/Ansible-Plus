@@ -1,6 +1,6 @@
 ---
-- hosts: 192.168.0.8
-  remote_user: xcad
+- hosts: all
+  remote_user: ubuntu
 
   become: yes
   tasks:
