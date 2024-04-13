@@ -1,11 +1,14 @@
+---
 - hosts: all
   become: yes
   tasks:
-    - name: Update package list with delay
+    - name: Update all packages with delay
       apt:
+        upgrade: yes
         update_cache: yes
       async: 300  # Wait for 300 seconds (adjust as needed)
       poll: 0
+
 
   
 
