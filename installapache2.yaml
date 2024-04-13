@@ -7,10 +7,7 @@
       async: 300  # Wait for 300 seconds (adjust as needed)
       poll: 0
 
-    - name: Install Apache2
-      apt:
-        name: apache2
-        state: present
+  
 
 
 
