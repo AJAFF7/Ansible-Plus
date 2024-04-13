@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: mac
   become: true
   tasks:
     - name: Remove Nginx from Mac
