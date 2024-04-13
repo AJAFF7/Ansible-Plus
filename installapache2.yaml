@@ -4,9 +4,6 @@
   tasks:
     - name: Install Apache2
       apt:
-        name: "{{ item }}"
+        name: apache2
         state: present
-      loop:
-        - apache2
-        - apache2-bin
 
