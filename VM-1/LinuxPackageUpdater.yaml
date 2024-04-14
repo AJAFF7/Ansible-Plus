@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: vm-1
   become: yes
   tasks:
     - name: Perform system updates with a delay
