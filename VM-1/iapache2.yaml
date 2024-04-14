@@ -1,7 +1,12 @@
 - hosts: VM-1
   become: yes
   tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+
     - name: Install Apache on Ubuntu
       apt:
         name: apache2
         state: present
+
