@@ -1,5 +1,5 @@
 ---
-- name: Install Nginx on VM-2
+- name: Install Nginx in /etc/nginx directory
   hosts: VM-2
   become: yes  # This will run the tasks with escalated privileges
 
