@@ -1,7 +1,8 @@
 - hosts: VM-1
   become: yes
   tasks:
-    - name: Install net-tools (which includes ifconfig)
+    - name: Install iproute2
       apt:
-        name: net-tools
+        name: iproute2
         state: present
+
