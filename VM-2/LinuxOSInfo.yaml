@@ -1,5 +1,5 @@
 ---
-- hosts: VM-1 # Replace 'your_target_host_or_group' with the name of your target host or group
+- hosts: VM-2 # Replace 'your_target_host_or_group' with the name of your target host or group
   become: yes
   tasks:
     - name: Get OS information
