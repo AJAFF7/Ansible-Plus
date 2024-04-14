@@ -1,0 +1,12 @@
+---
+- hosts: VM-1 # Replace 'your_target_host_or_group' with the name of your target host or group
+  become: yes
+  tasks:
+    - name: Get OS information
+      shell: lsb_release -a
+      register: os_info
+      
+    - name: Display OS information
+      debug:
+        var: os_info.stdout_lines
+
