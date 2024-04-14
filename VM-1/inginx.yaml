@@ -1,8 +1,8 @@
 ---
-- hosts: vm-1
+- hosts: VM-1
   become: yes
   tasks:
     - name: Install Nginx from Ubuntu
-      homebrew:
+      apt:
         name: nginx
         state: present
