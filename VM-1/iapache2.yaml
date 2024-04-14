@@ -1,0 +1,7 @@
+- hosts: VM-1
+  become: yes
+  tasks:
+    - name: Install Apache on Ubuntu
+      apt:
+        name: apache2
+        state: present
