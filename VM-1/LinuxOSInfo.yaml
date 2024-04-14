@@ -1,6 +1,7 @@
 ---
 - hosts: VM  # Replace 'master' with the name of your target host or group
   tasks:
+  become: yes
     - name: Get OS information
       shell: lsb_release -a
       register: os_info
