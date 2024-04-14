@@ -1,6 +1,6 @@
 ---
 - hosts: VM-2 # Replace 'your_target_host_or_group' with the name of your target host or group
-  become: no
+  become: yes
   tasks:
     - name: Get OS information
       shell: lsb_release -a
