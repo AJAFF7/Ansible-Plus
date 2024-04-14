@@ -1,10 +1,10 @@
-- hosts: all  # Replace with the IP address or hostname of your Ubuntu host
+- hosts: all
   become: yes
   tasks:
-    - name: Get Disk Usage
+    - name: Get Memory Usage
       shell: free -h
       register: memory_usage
 
     - name: Display Memory Usage
       debug:
-        var: disk_usage.stdout_lines
+        var: memory_usage.stdout_lines
