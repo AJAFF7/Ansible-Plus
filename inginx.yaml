@@ -1,8 +1,0 @@
----
-- hosts: vm-1
-  become: yes
-  tasks:
-    - name: Install Nginx from Ubuntu
-      apt:
-        name: nginx
-        state: present
