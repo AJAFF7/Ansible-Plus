@@ -1,8 +1,6 @@
 ---
 - hosts: VM-2 # Replace 'your_target_host_or_group' with the name of your target host or group
-  vars:
-    ansible_ssh_private_key_file: /usr/bin/.ssh/id_rsa
-  become: yes
+  become: no
   tasks:
     - name: Get OS information
       shell: lsb_release -a
