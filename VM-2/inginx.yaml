@@ -1,8 +1,10 @@
 ---
-- hosts: VM-2
-  become: yes
+- name: Install Nginx on VM-2
+  hosts: VM-2
+  become: yes  # This will run the tasks with escalated privileges
+
   tasks:
-    - name: Install Nginx from Ubuntu
+    - name: Install Nginx from Ubuntu repositories
       apt:
         name: nginx
         state: present
