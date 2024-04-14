@@ -1,0 +1,5 @@
+- hosts: VM-2 # Replace with the IP address or hostname of your Ubuntu host
+  become: yes
+  tasks:
+    - name: Reboot the server
+      shell: reboot
