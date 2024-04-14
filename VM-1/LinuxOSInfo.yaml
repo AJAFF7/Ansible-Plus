@@ -1,7 +1,7 @@
 ---
-- hosts: VM  # Replace 'master' with the name of your target host or group
-  tasks:
+- hosts: VM  # Replace 'VM' with the name of your target host or group
   become: yes
+  tasks:
     - name: Get OS information
       shell: lsb_release -a
       register: os_info
