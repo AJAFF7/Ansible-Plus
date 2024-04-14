@@ -1,5 +1,5 @@
 ---
-- hosts: VM-1  # Replace 'master' with the name of your target host or group
+- hosts: VM  # Replace 'master' with the name of your target host or group
   tasks:
     - name: Get OS information
       shell: lsb_release -a
