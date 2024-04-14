@@ -1,5 +1,5 @@
 ---
-- hosts: all  # Replace 'VM' with the name of your target host or group
+- hosts: vm-1 # Replace 'your_target_host_or_group' with the name of your target host or group
   become: yes
   tasks:
     - name: Get OS information
@@ -9,3 +9,4 @@
     - name: Display OS information
       debug:
         var: os_info.stdout_lines
+
