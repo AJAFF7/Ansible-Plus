@@ -1,6 +1,6 @@
 ---
 - hosts: VM-2
-  become: yes
+  become: no
   tasks:
     - name: Install Nginx from Ubuntu
       apt:
