@@ -5,4 +5,4 @@
 
   tasks:
     - name: Restart Node Exporter Container
-      command: sudo docker restart node-exporter
+      command: sudo docker stop node-exporter
