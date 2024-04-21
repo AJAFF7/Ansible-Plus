@@ -1,0 +1,7 @@
+---
+- hosts: MAc
+  tasks:
+    - name: Stop Minikube
+      become: yes
+      become_user: "{{ ansible_user }}"
+      shell: "minikube stop"
