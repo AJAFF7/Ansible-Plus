@@ -1,5 +1,5 @@
 ---
-- hosts: MAc
+- hosts: MAC
   tasks:
     - name: Stop Minikube
       become: yes
