@@ -3,6 +3,16 @@
   hosts: MAC
   gather_facts: false
   tasks:
+    - name: Check if eksctl is installed
+      command: "/opt/homebrew/bin/eksctl version"
+      register: eksctl_installed
+      ignore_errors: true
+      changed_when: false
+
+    - name: Install eksctl using Homebrew
+      command: "/opt/homebrew/bin/brew install eksctl"
+      when: "'Error: No such file or directory' in eksctl_installed.stderr"
+
     - name: Update EKS Nodegroup Configuration
       command: >
         eksctl update nodegroup --region eu-central-1 --cluster eks-cluster --name linux-nodes --nodes-min 0
@@ -29,4 +39,4 @@
     - name: Fail the playbook
       fail:
         msg: "Playbook failed. Check tasks for details."
-      when: update_result.rc != 0 or stop_result.rc != 0
+      when: eksctl_installed.rc != 0 or update_result.rc != 0 or stop_result.rc != 0
