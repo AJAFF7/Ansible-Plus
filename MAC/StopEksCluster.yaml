@@ -4,4 +4,4 @@
     - name: Stop EKS Cluster Nodes
       become: yes
       become_user: "{{ ansible_user }}"
-      command: "/opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0"
+      command: "/opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0 --cluster eks-cluster"
