@@ -1,0 +1,7 @@
+---
+- hosts: MAC
+  tasks:
+    - name: Stop EKS Cluster Nodes
+      become: yes
+      become_user: "{{ ansible_user }}"
+      command: "eksctl scale nodegroup --region eu-central-1 --name linux-node --nodes=0"
