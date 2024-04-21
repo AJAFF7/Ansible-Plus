@@ -1,7 +1,32 @@
 ---
-- hosts: MAC
+- name: Stop EKS Cluster Nodes
+  hosts: MAC
+  gather_facts: false
   tasks:
+    - name: Update EKS Nodegroup Configuration
+      command: >
+        eksctl update nodegroup --region eu-central-1 --cluster eks-cluster --name linux-nodes --nodes-min 0
+      register: update_result
+      changed_when: false
+
+    - name: Check if nodegroup update was successful
+      fail:
+        msg: "Failed to update nodegroup configuration"
+      when: update_result.rc != 0
+
     - name: Stop EKS Cluster Nodes
-      become: yes
-      become_user: "{{ ansible_user }}"
-      command: "/opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0 --cluster eks-cluster"
+      command: >
+        /opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0 --cluster eks-cluster
+      register: stop_result
+      changed_when: false
+
+    - name: Check if nodes were stopped successfully
+      fail:
+        msg: "Failed to stop EKS cluster nodes"
+      when: stop_result.rc != 0
+
+  handlers:
+    - name: Fail the playbook
+      fail:
+        msg: "Playbook failed. Check tasks for details."
+      when: update_result.rc != 0 or stop_result.rc != 0
