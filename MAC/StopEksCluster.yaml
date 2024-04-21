@@ -9,34 +9,19 @@
       ignore_errors: true
       changed_when: false
 
-    - name: Install eksctl using Homebrew
-      command: "/opt/homebrew/bin/brew install weaveworks/tap/eksctl"
-      when: "'Error: No such file or directory' in eksctl_installed.stderr"
-
     - name: Update EKS Nodegroup Configuration
       command: >
-        eksctl update nodegroup --region eu-central-1 --cluster eks-cluster --name linux-nodes --nodes-min 0
-      register: update_result
-      changed_when: false
-
-    - name: Check if nodegroup update was successful
-      fail:
-        msg: "Failed to update nodegroup configuration"
-      when: update_result.rc != 0
-
-    - name: Stop EKS Cluster Nodes
-      command: >
         /opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0 --cluster eks-cluster
-      register: stop_result
+      register: scale_result
       changed_when: false
 
-    - name: Check if nodes were stopped successfully
+    - name: Check if nodegroup was scaled down successfully
       fail:
-        msg: "Failed to stop EKS cluster nodes"
-      when: stop_result.rc != 0
+        msg: "Failed to scale down EKS cluster nodes"
+      when: scale_result.rc != 0
 
   handlers:
     - name: Fail the playbook
       fail:
         msg: "Playbook failed. Check tasks for details."
-      when: eksctl_installed.rc != 0 or update_result.rc != 0 or stop_result.rc != 0
+      when: eksctl_installed.rc != 0 or scale_result.rc != 0
