@@ -1,3 +1,4 @@
+
 ---
 - name: Stop EKS Cluster Nodes
   hosts: MAC
@@ -9,19 +10,27 @@
       ignore_errors: true
       changed_when: false
 
-    - name: Update EKS Nodegroup Configuration
+    - name: Drain EKS Nodegroup
       command: >
-        /opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --name linux-nodes --nodes=0 --cluster eks-cluster
-      register: scale_result
+        /opt/homebrew/bin/eksctl drain nodegroup --region eu-central-1 --cluster eks-cluster --name linux-nodes
+      register: drain_result
+      ignore_errors: true
       changed_when: false
 
-    - name: Check if nodegroup was scaled down successfully
+    - name: Scale EKS Nodegroup to 0
+      command: >
+        /opt/homebrew/bin/eksctl scale nodegroup --region eu-central-1 --cluster eks-cluster --name linux-nodes --nodes=0
+      register: scale_result
+      ignore_errors: true
+      changed_when: false
+
+    - name: Check if nodegroup was drained and scaled successfully
       fail:
-        msg: "Failed to scale down EKS cluster nodes"
-      when: scale_result.rc != 0
+        msg: "Failed to drain or scale EKS cluster nodegroup"
+      when: drain_result.rc != 0 or scale_result.rc != 0
 
   handlers:
     - name: Fail the playbook
       fail:
         msg: "Playbook failed. Check tasks for details."
-      when: eksctl_installed.rc != 0 or scale_result.rc != 0
+      when: eksctl_installed.rc != 0 or drain_result.rc != 0 or scale_result.rc != 0
