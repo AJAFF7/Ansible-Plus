@@ -10,7 +10,7 @@
       changed_when: false
 
     - name: Install eksctl using Homebrew
-      command: "/opt/homebrew/bin/brew install eksctl"
+      command: "/opt/homebrew/bin/brew install weaveworks/tap/eksctl"
       when: "'Error: No such file or directory' in eksctl_installed.stderr"
 
     - name: Update EKS Nodegroup Configuration
