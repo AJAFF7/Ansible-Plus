@@ -5,5 +5,5 @@
       become: yes
       become_user: "{{ ansible_user }}"
       environment:
-        PATH: "/opt/homebrew/bin/kind"
-      command: "/opt/homebrew/bin/kind/kck config use-context kind-1-cluste"
+        PATH: "/opt/homebrew/bin/:$PATH"  # Adjusting the PATH to include /opt/homebrew/bin/
+      command: "/opt/homebrew/bin/kubectl config use-context kind-1-cluster"  # Corrected the command
