@@ -6,4 +6,4 @@
       become_user: "{{ ansible_user }}"
       environment:
         PATH: "/opt/homebrew/bin/kind"
-      command: "/opt/homebrew/bin/kind/kck config use-context kind-0-cluste"
+      command: "/opt/homebrew/bin/kind/kck config use-context kind-1-cluste"
