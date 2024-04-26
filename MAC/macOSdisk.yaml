@@ -1,9 +1,9 @@
 <<<<<<< HEAD
-# ---
-# - hosts: mac  # Replace 'nodes' with the name of your target host or group
-#   tasks:
-#     - name: Get Disk Usage on macOS
-#       shell: df -h
-#       register: disk_usage
+---
+- hosts: mac  # Replace 'nodes' with the name of your target host or group
+  tasks:
+    - name: Get Disk Usage on macOS
+      shell: df -h
+      register: disk_usage
 
 
