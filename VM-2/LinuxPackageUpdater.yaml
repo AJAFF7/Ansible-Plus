@@ -1,11 +1,9 @@
----
-- hosts: all
+- hosts: VM-2
   become: yes
   tasks:
     - name: Perform system updates with a delay
       apt:
         upgrade: yes
         update_cache: yes
-      async: 300  # Wait for 300 seconds (adjust as needed)
+      async: 600  # Wait for 600 seconds (10 minutes)
       poll: 0
-

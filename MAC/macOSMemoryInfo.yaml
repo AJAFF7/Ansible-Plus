@@ -1,4 +1,4 @@
-- hosts: mac
+- hosts: MAC
   gather_facts: no  # We don't need to gather facts for macOS
   become: yes
   tasks:

@@ -1,4 +1,4 @@
-- hosts: VM-1
+- hosts: VM-2
   become: yes
   tasks:
     - name: Get Memory Usage

@@ -1,4 +1,4 @@
-- hosts: VM-1 # Replace with the IP address or hostname of your Ubuntu host
+- hosts: VM-2 # Replace with the IP address or hostname of your Ubuntu host
   become: yes
   tasks:
     - name: Get Disk Usage

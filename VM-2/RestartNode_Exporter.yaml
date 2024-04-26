@@ -1,0 +1,8 @@
+---
+- name: Restart Node Exporter Container with Docker
+  hosts: VM-2  # Replace 'your_host' with the hostname or group of hosts where Docker is running
+  become: yes       # Run tasks with sudo
+
+  tasks:
+    - name: Restart Node Exporter Container
+      command: sudo docker restart node-exporter

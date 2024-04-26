@@ -1,0 +1,9 @@
+---
+- hosts: MAC
+  tasks:
+    - name: Change Cluster Context To 0
+      become: yes
+      become_user: "{{ ansible_user }}"
+      environment:
+        PATH: "/opt/homebrew/bin/:$PATH"  # Adjusting the PATH to include /opt/homebrew/bin/
+      command: "/opt/homebrew/bin/kubectl config use-context kind-0-cluster"  # Corrected the command

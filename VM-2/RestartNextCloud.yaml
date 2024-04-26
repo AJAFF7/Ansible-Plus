@@ -1,0 +1,8 @@
+---
+- name: Restart Nextcloud via Snap
+  hosts: VM-2
+  become: yes
+
+  tasks:
+    - name: Restart Nextcloud
+      command: sudo snap restart nextcloud
