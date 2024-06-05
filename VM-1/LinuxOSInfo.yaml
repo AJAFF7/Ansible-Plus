@@ -10,7 +10,7 @@
       debug:
         var: os_info.stdout_lines
 
-- hosts: VM-1
+- hosts: VM-2
   become: yes
   tasks:
     - name: Get OS version on macOS
