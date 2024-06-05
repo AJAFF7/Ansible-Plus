@@ -3,5 +3,4 @@
     - name: Stop all Docker containers
       become: yes
       shell: docker stop $(docker ps -q)
-      args:
-        warn: false
+
