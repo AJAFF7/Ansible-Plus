@@ -6,4 +6,4 @@
       become_user: "{{ ansible_user }}"
       environment:
         PATH: "/usr/local/bin:/usr/bin:/bin"
-      command: "docker stop portainer"
+      command: "/usr/local/bin/ sudo docker stop portainer"
