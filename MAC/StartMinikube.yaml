@@ -1,4 +1,4 @@
-- hosts: MAC
+- hosts: Mac
   tasks:
     - name: Stop Portainer
       become: yes
