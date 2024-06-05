@@ -1,12 +1,24 @@
 ---
-- hosts: VM-1 # Replace 'your_target_host_or_group' with the name of your target host or group
+- hosts: VM-1
   become: yes
   tasks:
     - name: Get OS information
       shell: lsb_release -a
       register: os_info
-      
+
     - name: Display OS information
       debug:
         var: os_info.stdout_lines
+
+- hosts: VM-1
+  become: yes
+  tasks:
+    - name: Get OS version on macOS
+      shell: sw_vers
+      register: os_version
+
+    - name: Display OS version
+      debug:
+        var: os_version.stdout_lines
+
 
