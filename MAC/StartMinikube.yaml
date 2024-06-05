@@ -1,9 +1,9 @@
 ---
 - hosts: MAC
   tasks:
-    - name: Start Minikube
+    - name: Stop Portainer
       become: yes
       become_user: "{{ ansible_user }}"
       environment:
         PATH: "/usr/local/bin:/usr/bin:/bin"
-      command: "/usr/local/bin/minikube start"
+      command: "docker stop portainer"
