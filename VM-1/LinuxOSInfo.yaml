@@ -1,5 +1,5 @@
 ---
-- hosts: VM-1
+- hosts: All
   become: yes
   tasks:
     - name: Get OS information
@@ -10,6 +10,13 @@
       debug:
         var: os_info.stdout_lines
 
+- hosts: All
+  become: yes
+  tasks:
+    - name: Get OS version on macOS
+      shell: sw_vers
+      register: os_version
 
-
-
+    - name: Display OS version
+      debug:
+        var: os_version.stdout_lines
