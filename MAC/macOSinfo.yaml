@@ -1,5 +1,5 @@
 ---
-- hosts: MAC  # Replace 'nodes' with the name of your target host or group
+- hosts: Mac  # Replace 'nodes' with the name of your target host or group
   become: yes
   tasks:
     - name: Get OS version on macOS
