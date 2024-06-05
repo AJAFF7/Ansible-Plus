@@ -1,7 +1,7 @@
 - hosts: Mac
   tasks:
-    - name: Stop Portainer
+    - name: Start Portainer
       become: no  # Disable privilege escalation for this task
       environment:
         PATH: "/usr/local/bin:/usr/bin:/bin"
-      command: "docker stop portainer"
+      command: "docker start portainer"
