@@ -1,0 +1,5 @@
+- hosts: Mac
+  tasks:
+    - name: Start all Docker containers
+      become: yes
+      shell: /usr/local/bin/docker start $(/usr/local/bin/docker ps -a -q)
