@@ -16,8 +16,7 @@
       ignore_errors: true
 
     - name: Display the number of stopped containers
-      shell: |
-        docker ps -a -f "status=exited" --format "{{ json . }}" | jq 'length'
+      command: docker ps -a -f "status=exited" --format "{{ json . }}" | jq 'length'
       register: stopped_container_count
       environment:
         PATH: "/usr/local/bin:/usr/bin:/bin"
