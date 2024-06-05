@@ -2,5 +2,4 @@
   tasks:
     - name: Stop all Docker containers
       become: yes
-      shell: docker stop $(docker ps -q)
-
+      shell: /usr/local/bin/docker stop $(/usr/local/bin/docker ps -q)
