@@ -1,17 +1,9 @@
 version: v1.0
 name: MySemaphorePipeline
 
-agent:
-  machine:
-    type: e1-standard-2
-    os_image: ubuntu1804
-
 blocks:
   - name: Build
     task:
-      env_vars:
-        - name: GIT_TERMINAL_PROMPT
-          value: 1
       jobs:
         - name: Clone Repository
           commands:
