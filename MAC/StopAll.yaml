@@ -14,3 +14,15 @@
         PATH: "/usr/local/bin:/usr/bin:/bin"
       when: semaphore_container_id.stdout != ""
       ignore_errors: true
+
+    - name: Display the number of stopped containers
+      shell: |
+        docker ps -a -f "status=exited" --format "{{ json . }}" | jq 'length'
+      register: stopped_container_count
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/bin"
+      ignore_errors: true
+
+    - debug:
+        msg: "Number of stopped containers: {{ stopped_container_count.stdout }}"
+      when: stopped_container_count.stdout is defined
