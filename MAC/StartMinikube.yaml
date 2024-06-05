@@ -1,8 +1,7 @@
 - hosts: Mac
   tasks:
     - name: Stop Portainer
-      become: yes
-      become_user: ansible_user
+      become: no  # Disable privilege escalation for this task
       environment:
         PATH: "/usr/local/bin:/usr/bin:/bin"
       command: "docker stop portainer"
