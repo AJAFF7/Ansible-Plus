@@ -12,11 +12,11 @@
       register: stopped_containers
       ignore_errors: true
 
-    - name: Display the number of stopped containers
-      shell: docker ps -a -f "status=exited" --format "{{.ID}}" | wc -l
-      register: stopped_container_count
+    - name: Display the names of stopped containers
+      shell: docker ps -a -f "status=exited" --format "{{.Names}}"
+      register: stopped_container_names
       ignore_errors: true
 
     - debug:
-        msg: "Number of stopped containers: {{ stopped_container_count.stdout }}"
-      when: stopped_container_count is succeeded
+        msg: "Stopped container names: {{ stopped_container_names.stdout_lines }}"
+      when: stopped_container_names is succeeded
