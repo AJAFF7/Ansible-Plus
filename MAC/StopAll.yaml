@@ -1,22 +1,16 @@
----
-- name: Stop All Docker Containers
-  hosts: Mac
+- hosts: Mac
+  become: yes
   tasks:
     - name: Get the ID of the Semaphore container
-      shell: docker ps -q --filter "name=semaphore"
+      shell: /usr/local/bin/docker ps --filter "name=semaphore" --format "{{.ID}}"
       register: semaphore_container_id
-      ignore_errors: true
-
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/bin"
+    
     - name: Stop all Docker containers except Semaphore
-      shell: docker stop $(docker ps -q | grep -v "{{ semaphore_container_id.stdout }}")
-      register: stopped_containers
+      shell: |
+        docker ps -q | grep -v $(echo {{ semaphore_container_id.stdout }} | tr -d '\n') | xargs docker stop
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/bin"
+      when: semaphore_container_id.stdout != ""
       ignore_errors: true
-
-    - name: Display the names of stopped containers
-      shell: docker ps -a -f "status=exited" --format "{{.Names}}"
-      register: stopped_container_names
-      ignore_errors: true
-
-    - debug:
-        msg: "Stopped container names: {{ stopped_container_names.stdout_lines }}"
-      when: stopped_container_names is succeeded
