@@ -1,0 +1,89 @@
+- hosts: VM-1
+  tasks:
+    - name: Check if kind-cluster-0 exists
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: "/usr/local/bin/kind get clusters"
+      register: clusters
+
+    - name: Create kind-cluster-0
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      shell: "/usr/local/bin/kind create cluster --name cluster-0"
+      when: "'cluster-0' not in clusters.stdout"
+
+    - name: Cluster kind-cluster-0 already exists
+      debug:
+        msg: "Cluster kind-cluster-0 already exists"
+      when: "'cluster-0' in clusters.stdout"
+
+    - name: Wait for 10 sec before creating kind-cluster-1
+      wait_for:
+        timeout: 10
+      when: "'cluster-0' not in clusters.stdout"
+
+    - name: Check if kind-cluster-1 exists
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: "/usr/local/bin/kind get clusters"
+      register: clusters
+
+    - name: Create kind-cluster-1
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      shell: "/usr/local/bin/kind create cluster --name cluster-1"
+      when: "'cluster-1' not in clusters.stdout"
+
+    - name: Cluster kind-cluster-1 already exists
+      debug:
+        msg: "Cluster kind-cluster-1 already exists"
+      when: "'cluster-1' in clusters.stdout"
+
+    - name: Delete all Deployments in kind-cluster-0
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      shell: |
+        /usr/local/bin/kubectl delete all --all --kubeconfig=/home/dev/.kube/config --context=kind-cluster-0
+    - name: Apply Deployments in kind-cluster-1
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      shell: |
+        /usr/local/bin/kubectl apply -f /home/dev/KinD/deployment.yaml --kubeconfig=/home/dev/.kube/config --context=kind-cluster-1
+
+    - name: Change context to cluster-1
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      shell: |
+        /usr/local/bin/kubectl config use-context kind-cluster-1
+
+    - name: Wait for 3 minutes to ensure deployments are ready
+      wait_for:
+        timeout: 180
+
+    - name: Forward port to localhost:8500
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      command: >
+        /usr/local/bin/kubectl port-forward svc/ecommerce-service 8500:8000 --kubeconfig=/home/dev/.kube/config --context=kind-cluster-1
+      async: 250
+      poll: 0
+    - name: Wait for 5 seconds to ensure port forwarding is established
+      wait_for:
+        timeout: 5
+
+    - name: All tasks completed successfully
+      debug:
+        msg: "All tasks ran successfully."
+
