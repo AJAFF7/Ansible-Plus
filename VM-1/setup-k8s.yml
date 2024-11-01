@@ -17,7 +17,7 @@
     - name: Update Helm repo
       shell: "helm repo update"
       args:
-        chdir: "/home/dev/.cache/helm/repository"  # Adjust this if needed
+        chdir: "/home/dev/helm/repository"  # Adjust this if needed
 
     - name: Create argocd namespace
       shell: "kubectl create namespace argocd || echo 'Namespace argocd already exists'"
