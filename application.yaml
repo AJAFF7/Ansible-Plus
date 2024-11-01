@@ -1,0 +1,24 @@
+- name: Manage Kubernetes Deployment and Port-Forward
+  hosts: VM-1
+  become: yes
+  vars:
+    ansible_ssh_user: dev
+    kube_context: "kind-cluster-0"  # Updated context name
+  tasks:
+    - name: Check if deployment exists
+      command: kubectl get deployments -n myapp --kubeconfig=/home/dev/.kube/config --context={{ kube_context }}
+      register: deployment_status
+      ignore_errors: yes
+
+    - name: Create deployment if not exists
+      command: kubectl apply -f /home/dev/Argo/application.yaml --kubeconfig=/home/dev/.kube/config --context={{ kube_context }}
+      when: deployment_status.rc != 0
+
+    - name: Port-forward the Kubernetes service
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      command: >
+        /usr/local/bin/kubectl port-forward svc/ecommerce-service 8500:8000 --kubeconfig=/home/dev/.kube/config --context={{ kube_context }}
+

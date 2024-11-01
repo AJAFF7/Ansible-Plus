@@ -1,0 +1,8 @@
+- hosts: VM-1
+  become: yes
+  tasks:
+    - name: Install iproute2
+      apt:
+        name: iproute2
+        state: present
+

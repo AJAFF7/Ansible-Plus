@@ -1,0 +1,86 @@
+- hosts: VM-1
+  tasks:
+    - name: Check if kind-cluster-0 exists
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: "/usr/local/bin/kind get clusters"
+      register: clusters
+
+    - name: Create kind-cluster-0
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      shell: "/usr/local/bin/kind create cluster --name cluster-0"
+      when: "'cluster-0' not in clusters.stdout"
+
+    - name: Cluster kind-cluster-0 already exists
+      debug:
+        msg: "Cluster kind-cluster-0 already exists"
+      when: "'cluster-0' in clusters.stdout"
+
+    - name: Wait for 10 seconds before proceeding
+      wait_for:
+        timeout: 10
+      when: "'cluster-0' not in clusters.stdout"
+
+    - name: Install ArgoCD namespace
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      command: "/usr/local/bin/kubectl create namespace argocd --kubeconfig=/home/dev/.kube/config --context=kind-cluster-0"
+      when: "'cluster-0' in clusters.stdout"
+
+    - name: Apply ArgoCD installation manifest
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      command: "/usr/local/bin/kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --kubeconfig=/home/dev/.kube/config --context=kind-cluster-0"
+      when: "'cluster-0' in clusters.stdout"
+
+    - name: Apply application.yaml for ArgoCD
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+      command: "/usr/local/bin/kubectl apply -f /home/dev/Argo/application.yaml --kubeconfig=/home/dev/.kube/config --context=kind-cluster-0"
+      when: "'cluster-0' in clusters.stdout"
+
+    - name: Forward port to localhost:8080 for ArgoCD server
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      command: >
+        /usr/local/bin/kubectl port-forward svc/argocd-server -n argocd 8080:443 --kubeconfig=/home/dev/.kube/config --context=kind-cluster-0
+      async: 250
+      poll: 0
+
+    - name: Wait for 5 seconds to ensure port forwarding is established
+      wait_for:
+        timeout: 5
+
+    - name: Wait for 3 minutes to ensure deployments are ready
+      wait_for:
+        timeout: 180
+
+    - name: Forward port to localhost:8181 for eCommerce service
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      environment:
+        PATH: "/usr/local/bin/:$PATH"
+      command: >
+        /usr/local/bin/kubectl port-forward svc/ecommerce-service 8181:8000 --kubeconfig=/home/dev/.kube/config --context=kind-cluster-1
+      async: 250
+      poll: 0
+
+    - name: Wait for 5 seconds to ensure port forwarding is established
+      wait_for:
+        timeout: 5
+
+    - name: All tasks completed successfully
+      debug:
+        msg: "All tasks ran successfully."
+

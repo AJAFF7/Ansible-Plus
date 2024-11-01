@@ -1,0 +1,9 @@
+[VM-1]
+192.168.0.2
+
+[VM-1:vars]
+ansible_ssh_user=dev
+ansible_ssh_pass=555
+ansible_sudo_pass=555
+ansible_python_interpreter=/home/dev/Ansible/venv/bin/python3
+

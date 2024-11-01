@@ -1,0 +1,56 @@
+- hosts: VM-1
+  tasks:
+    - name: Update image tag in deployment.yaml
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      lineinfile:
+        path: /home/dev/Argo/Dev/deployment.yaml
+        regexp: 'image: ajaff/crm:[^\s]+'
+        line: 'image: ajaff/crm:1.0'
+
+    - name: Ensure Git repository URL is set
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git remote set-url origin https://github.com/AJAFF7/Argo.git
+      args:
+        chdir: /home/dev/Argo
+
+    - name: Get Git status
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git status --porcelain
+      args:
+        chdir: /home/dev/Argo
+      register: git_status
+
+    - name: Add changes to Git
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git add /home/dev/Argo/Dev/deployment.yaml
+      args:
+        chdir: /home/dev/Argo
+      when: git_status.stdout != ""
+
+    - name: Commit changes to Git
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git commit -m "Update image tag to ajaff/crm:1.0"
+      args:
+        chdir: /home/dev/Argo
+      when: git_status.stdout != ""
+
+    - name: Ensure Git repository URL is set before pushing
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git remote set-url origin https://github.com/AJAFF7/Argo.git
+      args:
+        chdir: /home/dev/Argo
+
+    - name: Push changes to Git
+      become: yes
+      become_user: "{{ ansible_ssh_user }}"
+      command: git push origin main
+      args:
+        chdir: /home/dev/Argo
+      when: git_status.stdout != ""
+

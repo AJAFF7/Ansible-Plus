@@ -1,0 +1,11 @@
+- hosts: VM-1
+  become: yes
+  tasks:
+    - name: Get CPU information
+      shell: mpstat -P ALL
+      register: cpu_info
+
+    - name: Display CPU information
+      debug:
+        var: cpu_info.stdout_lines
+
