@@ -1,5 +1,5 @@
 ---
-- hosts: VM-1
+- hosts: VM1
   become: yes
   tasks:
     - name: Get OS information
