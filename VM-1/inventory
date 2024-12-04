@@ -1,5 +1,5 @@
 [VM1]
-192.168.0.2
+10.211.55.5
 
 [VM1:vars]
 ansible_ssh_user=dev
