@@ -214,6 +214,7 @@
       shell: |
         kubectl apply -f /home/dev/Argo/application0.yaml
         kubectl apply -f /home/dev/Argo/application1.yaml
+        kubectl apply -f /home/dev/Argo/application2.yaml
       args:
         chdir: "/home/dev/Argo"  # Set the working directory for better readability
 
