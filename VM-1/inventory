@@ -1,7 +1,7 @@
-[VM_1]
-192.168.1.24
+[VM1]
+192.168.1.8
 
-[VM_1:vars]
+[VM1:vars]
 ansible_ssh_user=dev
 ansible_ssh_pass=555
 ansible_sudo_pass=555
