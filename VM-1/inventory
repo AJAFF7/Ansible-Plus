@@ -1,6 +1,10 @@
 [VM_1]
 192.168.1.10
 
+[VM1]
+192.168.1.23
+
+
 [VM_1:vars]
 ansible_ssh_user=dev
 ansible_ssh_pass=555
