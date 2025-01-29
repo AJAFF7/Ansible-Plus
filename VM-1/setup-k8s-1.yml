@@ -195,7 +195,7 @@
 
     - name: Modify the CoreDNS forward section
       set_fact:
-        updated_corefile: "{{ coredns_cm.resources[0].data.Corefile | regex_replace('forward .+ {', 'forward . 172.18.0.3 8.8.8.8 8.8.4.4 {') }}"
+        updated_corefile: "{{ coredns_cm.resources[0].data.Corefile | regex_replace('forward .+ {', 'forward . 172.18.0.2 8.8.8.8 8.8.4.4 {') }}"
 
     - name: Apply the updated CoreDNS ConfigMap
       k8s:
@@ -212,7 +212,7 @@
 
     - name: Apply Argo application configurations
       shell: |
-        kubectl apply -f /home/dev/Argo/Argo-1/application0.yaml
+        kubectl apply -f /home/dev/Argo-1/application0.yaml
        # kubectl apply -f /home/dev/Argo/application1.yaml
        # kubectl apply -f /home/dev/Argo/application2.yaml
        # kubectl apply -f /home/dev/Argo/application3.yaml
