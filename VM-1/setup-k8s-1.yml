@@ -242,21 +242,21 @@
         
         
     
-    # - name: Update NodePort for dms-service
-    #   shell: |
-    #     kubectl patch svc dms-service -n default \
-    #       --type='json' \
-    #       -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30302}]'
-    #   register: update_dms_service
-    #   ignore_errors: yes  # Ignore errors for debugging purposes
+    - name: Update NodePort for uptime-service
+      shell: |
+        kubectl patch svc uptime-service -n default \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30402}]'
+      register: update_uptime_service
+      ignore_errors: yes  # Ignore errors for debugging purposes
 
-    # - name: Check the updated dms-service details
-    #   shell: kubectl get svc dms-service -n default
-    #   register: dms_service_details
+    - name: Check the updated uptime-service details
+      shell: kubectl get svc uptime-service -n default
+      register: uptime_service_details
 
-    # - name: Display the dms-service details
-    #   debug:
-    #     var: dms_service_details.stdout
+    - name: Display the uptime-service details
+      debug:
+        var: uptime_service_details.stdout
 
     
     # - name: Update NodePort for mongo-service
