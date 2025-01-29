@@ -217,7 +217,7 @@
        # kubectl apply -f /home/dev/Argo/application2.yaml
        # kubectl apply -f /home/dev/Argo/application3.yaml
       args:
-        chdir: "/home/dev/Argo/Argo-1" 
+        chdir: "/home/dev/Argo-1" 
 
 
     - name: Wait for 4 minutes
