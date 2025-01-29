@@ -1,4 +1,4 @@
-- hosts: VM2
+- hosts: VM_1
   tasks:
     - name: Check if cluster-1 exists
       shell: "kind get clusters"
