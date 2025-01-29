@@ -213,7 +213,7 @@
     - name: Apply Argo application configurations
       shell: |
         kubectl apply -f /home/dev/Argo-1/application0.yaml
-       # kubectl apply -f /home/dev/Argo/application1.yaml
+        kubectl apply -f /home/dev/Argo-1/application1.yaml
        # kubectl apply -f /home/dev/Argo/application2.yaml
        # kubectl apply -f /home/dev/Argo/application3.yaml
       args:
