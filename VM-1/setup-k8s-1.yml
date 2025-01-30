@@ -211,26 +211,26 @@
 
 
     - name: Apply Argo application configurations
-      # shell: |
-      #   kubectl apply -f /home/dev/Argo-1/application0.yaml
-      #   kubectl apply -f /home/dev/Argo-1/application1.yaml
-      #   kubectl apply -f /home/dev/Argo-1/application2.yaml
-      #   kubectl apply -f /home/dev/Argo-1/Helm3/mysql.yaml
-      #   kubectl apply -f /home/dev/Argo-1/Helm3/semaphore-ingress.yaml
-      #   kubectl apply -f /home/dev/Argo-1/Helm3/semaphore.yaml
-      # args:
-      #   chdir: "/home/dev/Argo-1" 
+      shell: |
+        kubectl apply -f /home/dev/Argo-1/application0.yaml
+        kubectl apply -f /home/dev/Argo-1/application1.yaml
+        kubectl apply -f /home/dev/Argo-1/application2.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/mysql.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/semaphore-ingress.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/semaphore.yaml
+      args:
+        chdir: "/home/dev/Argo-1" 
       
       
-        shell: |
-          cd /home/dev/Argo-1 && kubectl apply -f application0.yaml
-          cd /home/dev/Argo-1 && kubectl apply -f application1.yaml
-          cd /home/dev/Argo-1 && kubectl apply -f application2.yaml
-          cd /home/dev/Argo-1/Helm3 && kubectl apply -f mysql.yaml
-          cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore-ingress.yaml
-          cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore.yaml
-        args:
-          chdir: "/home/dev/Argo-1"
+        # shell: |
+        #   cd /home/dev/Argo-1 && kubectl apply -f application0.yaml
+        #   cd /home/dev/Argo-1 && kubectl apply -f application1.yaml
+        #   cd /home/dev/Argo-1 && kubectl apply -f application2.yaml
+        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f mysql.yaml
+        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore-ingress.yaml
+        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore.yaml
+        # args:
+        #   chdir: "/home/dev/Argo-1"
 
       
       
