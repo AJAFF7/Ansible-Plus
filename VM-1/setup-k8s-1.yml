@@ -211,14 +211,29 @@
 
 
     - name: Apply Argo application configurations
-      shell: |
-        kubectl apply -f /home/dev/Argo-1/application0.yaml
-        kubectl apply -f /home/dev/Argo-1/application1.yaml
-       # kubectl apply -f /home/dev/Argo/application2.yaml
-       # kubectl apply -f /home/dev/Argo/application3.yaml
-      args:
-        chdir: "/home/dev/Argo-1" 
+      # shell: |
+      #   kubectl apply -f /home/dev/Argo-1/application0.yaml
+      #   kubectl apply -f /home/dev/Argo-1/application1.yaml
+      #   kubectl apply -f /home/dev/Argo-1/application2.yaml
+      #   kubectl apply -f /home/dev/Argo-1/Helm3/mysql.yaml
+      #   kubectl apply -f /home/dev/Argo-1/Helm3/semaphore-ingress.yaml
+      #   kubectl apply -f /home/dev/Argo-1/Helm3/semaphore.yaml
+      # args:
+      #   chdir: "/home/dev/Argo-1" 
+      
+      
+        shell: |
+          cd /home/dev/Argo-1 && kubectl apply -f application0.yaml
+          cd /home/dev/Argo-1 && kubectl apply -f application1.yaml
+          cd /home/dev/Argo-1 && kubectl apply -f application2.yaml
+          cd /home/dev/Argo-1/Helm3 && kubectl apply -f mysql.yaml
+          cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore-ingress.yaml
+          cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore.yaml
+        args:
+          chdir: "/home/dev/Argo-1"
 
+      
+      
 
     - name: Wait for 4 minutes
       pause:
@@ -259,21 +274,21 @@
         var: uptime_service_details.stdout
 
     
-    # - name: Update NodePort for mongo-service
-    #   shell: |
-    #     kubectl patch svc mongo-service -n default \
-    #       --type='json' \
-    #       -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30303}]'
-    #   register: update_mongo_service
-    #   ignore_errors: yes  # Ignore errors for debugging purposes
+    - name: Update NodePort for semaphore-service
+      shell: |
+        kubectl patch svc semaphore-service -n default \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30403}]'
+      register: update_semaphore_service
+      ignore_errors: yes  # Ignore errors for debugging purposes
 
-    # - name: Check the updated mongo-service details
-    #   shell: kubectl get svc mongo-service -n default
-    #   register: mongo_service_details
+    - name: Check the updated semaphore-service details
+      shell: kubectl get svc semaphore-service -n default
+      register: mongo_ssemaphore_details
 
-    # - name: Display the mongo-service details
-    #   debug:
-    #     var: mongo_service_details.stdout
+    - name: Display the semaphore-service details
+      debug:
+        var: mongo_semaphore_details.stdout
         
         
         
