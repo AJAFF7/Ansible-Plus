@@ -221,19 +221,7 @@
       args:
         chdir: "/home/dev/Argo-1" 
       
-      
-        # shell: |
-        #   cd /home/dev/Argo-1 && kubectl apply -f application0.yaml
-        #   cd /home/dev/Argo-1 && kubectl apply -f application1.yaml
-        #   cd /home/dev/Argo-1 && kubectl apply -f application2.yaml
-        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f mysql.yaml
-        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore-ingress.yaml
-        #   cd /home/dev/Argo-1/Helm3 && kubectl apply -f semaphore.yaml
-        # args:
-        #   chdir: "/home/dev/Argo-1"
-
-      
-      
+    
 
     - name: Wait for 4 minutes
       pause:
@@ -292,21 +280,7 @@
         
         
         
-    # - name: Update NodePort for vcoins-service
-    #   shell: |
-    #     kubectl patch svc vcoins-service -n default \
-    #       --type='json' \
-    #       -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30304}]'
-    #   register: update_vcoins_service
-    #   ignore_errors: yes  # Ignore errors for debugging purposes
-
-    # - name: Check the updated vcoins-service details
-    #   shell: kubectl get svc vcoins-service -n default
-    #   register: vcoins_service_details
-
-    # - name: Display the vcoins-service details
-    #   debug:
-    #     var: vcoins_service_details.stdout
+   
        
         
    

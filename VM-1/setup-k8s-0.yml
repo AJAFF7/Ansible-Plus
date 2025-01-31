@@ -83,14 +83,14 @@
             --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
             --set-string controller.podAnnotations."prometheus\.io/port"="10254" \
             --set controller.metrics.service.type=NodePort \
-            --set controller.metrics.service.nodePort=30100
+            --set controller.metrics.service.nodePort=30200
         fi
 
     - name: Update NodePort for ingress-nginx-controller service
       shell: |
         kubectl patch svc ingress-nginx-controller -n ingress-nginx \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30400}, {"op": "replace", "path": "/spec/ports/1/nodePort", "value": 30500}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30500}, {"op": "replace", "path": "/spec/ports/1/nodePort", "value": 30600}]'
       register: update_nginx_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
@@ -153,15 +153,15 @@
 
     - name: Apply MetalLB configurations
       shell: |
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/pool-1.yaml
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/l2advertisement.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/pool-1.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/l2advertisement.yaml
 
 
 
     - name: Apply Node Exporter configurations
       shell: |
-        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/node-exporter.yaml
-        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/node-exporter-service.yaml
+        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-1/node-exporter.yaml
+        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-1/node-exporter-service.yaml
       args:
         chdir: "/home/dev/Kubernetes/Node-Exporter"  # Optional: Set the working directory if needed
       when: webhook_ready.rc == 0  # Ensure webhook is ready before applying Node Exporter configurations
@@ -212,23 +212,85 @@
 
     - name: Apply Argo application configurations
       shell: |
-        kubectl apply -f /home/dev/Argo/application0.yaml
-        kubectl apply -f /home/dev/Argo/application1.yaml
-        kubectl apply -f /home/dev/Argo/application2.yaml
-        # kubectl apply -f /home/dev/Argo/application3.yaml
+        kubectl apply -f /home/dev/Argo-0/application0.yaml
+        kubectl apply -f /home/dev/Argo-0/application1.yaml
+        kubectl apply -f /home/dev/Argo-0/application2.yaml
+        kubectl apply -f /home/dev/Argo-1/application0.yaml
+        kubectl apply -f /home/dev/Argo-1/application1.yaml
+        kubectl apply -f /home/dev/Argo-1/application2.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/mysql.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/semaphore-ingress.yaml
+        kubectl apply -f /home/dev/Argo-1/Helm3/semaphore.yaml
       args:
-        chdir: "/home/dev/Argo"  # Set the working directory for better readability
+        chdir: "/home/dev/Argo-1" 
+      
+  
 
+      
+      
 
     - name: Wait for 4 minutes
       pause:
         seconds: 240
 
+    - name: Update NodePort for drwa-service
+      shell: |
+        kubectl patch svc draw-service -n default \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30301}]'
+      register: update_draw_service
+      ignore_errors: yes  
+
+    - name: Check the updated draw-service details
+      shell: kubectl get svc draw-service -n default
+      register: draw_service_details
+
+    - name: Display the draw-service details
+      debug:
+        var: draw_service_details.stdout
+        
+        
+    
+    - name: Update NodePort for uptime-service
+      shell: |
+        kubectl patch svc uptime-service -n default \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30302}]'
+      register: update_uptime_service
+      ignore_errors: yes  # Ignore errors for debugging purposes
+
+    - name: Check the updated uptime-service details
+      shell: kubectl get svc uptime-service -n default
+      register: uptime_service_details
+
+    - name: Display the uptime-service details
+      debug:
+        var: uptime_service_details.stdout
+
+    
+    - name: Update NodePort for semaphore-service
+      shell: |
+        kubectl patch svc semaphore-service -n default \
+          --type='json' \
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30303}]'
+      register: update_semaphore_service
+      ignore_errors: yes  # Ignore errors for debugging purposes
+
+    - name: Check the updated semaphore-service details
+      shell: kubectl get svc semaphore-service -n default
+      register: mongo_ssemaphore_details
+
+    - name: Display the semaphore-service details
+      debug:
+        var: mongo_semaphore_details.stdout
+
+
+
     - name: Update NodePort for crm-service
       shell: |
         kubectl patch svc crm-service -n default \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30301}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30304}]'
       register: update_crm_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
@@ -246,7 +308,7 @@
       shell: |
         kubectl patch svc dms-service -n default \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30302}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30305}]'
       register: update_dms_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
@@ -263,7 +325,7 @@
       shell: |
         kubectl patch svc mongo-service -n default \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30303}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30306}]'
       register: update_mongo_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
@@ -273,25 +335,308 @@
 
     - name: Display the mongo-service details
       debug:
-        var: mongo_service_details.stdout
+        var: mongo_service_details.stdout    
         
         
         
-    # - name: Update NodePort for vcoins-service
-    #   shell: |
-    #     kubectl patch svc vcoins-service -n default \
-    #       --type='json' \
-    #       -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30304}]'
-    #   register: update_vcoins_service
-    #   ignore_errors: yes  # Ignore errors for debugging purposes
+   
+       
+        
+   
 
-    # - name: Check the updated vcoins-service details
-    #   shell: kubectl get svc vcoins-service -n default
-    #   register: vcoins_service_details
 
-    # - name: Display the vcoins-service details
-    #   debug:
-    #     var: vcoins_service_details.stdout
+
+
+ 
+
+
+
+
+
+
+
+
+
+# - hosts: VM_1
+#   tasks:
+#     - name: Check if cluster-0 exists
+#       shell: "kind get clusters"
+#       register: clusters
+
+#     - name: Create kind-cluster-0
+#       become: yes
+#       become_user: "{{ ansible_ssh_user }}"
+#       environment:
+#         PATH: "/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/bin"
+#       shell: |
+#         /usr/local/bin/kind create cluster --name cluster-0 --image kindest/node:v1.28.13
+#         sleep 30  # Wait for 30 seconds after the command runs
+#       when: "'cluster-0' not in clusters.stdout"
+
+#     - name: Update Helm repo
+#       shell: "helm repo update"
+#       args:
+#         chdir: "/home/dev/helm/repository"  # Adjust this if needed
+
+#     - name: Create argocd namespace
+#       shell: "kubectl create namespace argocd || echo 'Namespace argocd already exists'"
+#       ignore_errors: yes  # Ignore errors if the namespace already exists
+
+#     - name: Create metallb-system namespace
+#       shell: "kubectl create namespace metallb-system || echo 'Namespace metallb-system already exists'"
+#       ignore_errors: yes  # Ignore errors if the namespace already exists
+
+#     - name: Create monitoring namespace
+#       shell: "kubectl create namespace monitoring || echo 'Namespace monitoring already exists'"
+#       ignore_errors: yes  # Ignore errors if the namespace already exists
+
+#     - name: Check if Argo CD is already installed
+#       shell: "helm ls --namespace argocd | grep argocd"
+#       register: argocd_installed
+#       ignore_errors: yes  # Ignore if the release is not found
+
+#     - name: Install or upgrade Argo CD
+#       shell: |
+#         if [ -z "{{ argocd_installed.stdout }}" ]; then
+#           helm install argocd argo/argo-cd --namespace argocd
+#         else
+#           helm upgrade argocd argo/argo-cd --namespace argocd || true
+#         fi
+#       ignore_errors: yes  # Ignore errors if the upgrade fails
+
+#     - name: Wait for 2 minutes
+#       pause:
+#         minutes: 2
+
+#     - name: Check if Argo Rollouts is already installed
+#       shell: "helm ls --namespace argo-rollouts | grep argo-rollouts"
+#       register: argo_rollouts_installed
+#       ignore_errors: yes  # Ignore if the release is not found
+
+#     - name: Install or upgrade Argo Rollouts
+#       shell: |
+#         if [ -z "{{ argo_rollouts_installed.stdout }}" ]; then
+#           helm install argo-rollouts argo/argo-rollouts --namespace argo-rollouts --create-namespace
+#         else
+#           helm upgrade argo-rollouts argo/argo-rollouts --namespace argo-rollouts
+#         fi
+
+#     - name: Check if NGINX Ingress is already installed
+#       shell: "helm ls --namespace ingress-nginx | grep ingress-nginx"
+#       register: nginx_installed
+#       ignore_errors: yes  # Ignore if the release is not found
+
+#     - name: Install or upgrade NGINX Ingress
+#       shell: |
+#         if [ -z "{{ nginx_installed.stdout }}" ]; then
+#           helm install ingress-nginx ingress-nginx/ingress-nginx \
+#             --namespace ingress-nginx \
+#             --create-namespace \
+#             --set controller.metrics.enabled=true \
+#             --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
+#             --set-string controller.podAnnotations."prometheus\.io/port"="10254"
+#         else
+#           helm upgrade ingress-nginx ingress-nginx/ingress-nginx \
+#             --namespace ingress-nginx \
+#             --set controller.metrics.enabled=true \
+#             --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
+#             --set-string controller.podAnnotations."prometheus\.io/port"="10254" \
+#             --set controller.metrics.service.type=NodePort \
+#             --set controller.metrics.service.nodePort=30100
+#         fi
+
+#     - name: Update NodePort for ingress-nginx-controller service
+#       shell: |
+#         kubectl patch svc ingress-nginx-controller -n ingress-nginx \
+#           --type='json' \
+#           -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30400}, {"op": "replace", "path": "/spec/ports/1/nodePort", "value": 30500}]'
+#       register: update_nginx_service
+#       ignore_errors: yes  # Ignore errors for debugging purposes
+
+#     - name: Check the updated ingress-nginx-controller service details
+#       shell: kubectl get svc ingress-nginx-controller -n ingress-nginx
+#       register: nginx_service_details
+
+#     - name: Display the ingress-nginx-controller service details
+#       debug:
+#         var: nginx_service_details.stdout
+
+    
+    
+#     - name: Check if MetalLB is already installed
+#       shell: "helm ls --namespace metallb-system | grep metallb"
+#       register: metallb_installed
+#       ignore_errors: yes  # Ignore if the release is not found
+
+#     - name: Install or upgrade MetalLB
+#       shell: |
+#         if [ -z "{{ metallb_installed.stdout }}" ]; then
+#           helm install metallb metallb/metallb \
+#             --namespace metallb-system \
+#             --create-namespace \
+#             --set controller.nodeSelector."kubernetes\.io/os"=linux \
+#             --set speaker.nodeSelector."kubernetes\.io/os"=linux
+#         else
+#           helm upgrade metallb metallb/metallb \
+#             --namespace metallb-system \
+#             --set controller.nodeSelector."kubernetes\.io/os"=linux \
+#             --set speaker.nodeSelector."kubernetes\.io/os"=linux
+#         fi
+
+#     - name: Wait for MetalLB webhook service to be ready
+#       shell: |
+#         for i in {1..20}; do
+#           if kubectl get svc -n metallb-system metallb-webhook-service; then
+#             exit 0
+#           fi
+#           sleep 5
+#         done
+#         exit 1
+#       register: webhook_ready
+#       ignore_errors: yes
+
+#     - name: Wait for MetalLB pods to be ready
+#       shell: |
+#         for i in {1..20}; do
+#           if kubectl get pods -n metallb-system -l app=metallb -o jsonpath='{.items[*].status.containerStatuses[*].ready}' | grep -q 'true'; then
+#             exit 0
+#           fi
+#           sleep 5
+#         done
+#         exit 1
+#       register: pods_ready
+#       ignore_errors: yes
+
+#     - name: Wait for 3 minutes before applying MetalLB configurations
+#       shell: sleep 180
+
+#     - name: Apply MetalLB configurations
+#       shell: |
+#         kubectl apply -f /home/dev/Kubernetes/MetaLLB/pool-1.yaml
+#         kubectl apply -f /home/dev/Kubernetes/MetaLLB/l2advertisement.yaml
+
+
+
+#     - name: Apply Node Exporter configurations
+#       shell: |
+#         kubectl apply -f /home/dev/Kubernetes/Node-Exporter/node-exporter.yaml
+#         kubectl apply -f /home/dev/Kubernetes/Node-Exporter/node-exporter-service.yaml
+#       args:
+#         chdir: "/home/dev/Kubernetes/Node-Exporter"  # Optional: Set the working directory if needed
+#       when: webhook_ready.rc == 0  # Ensure webhook is ready before applying Node Exporter configurations
+
+#     - name: Check if Metrics Server is already installed
+#       shell: "helm ls --namespace kube-system | grep metrics-server"
+#       register: metrics_server_installed
+#       ignore_errors: yes  # Ignore if the release is not found
+
+#     - name: Install or upgrade Metrics Server
+#       shell: |
+#         if [ -z "{{ metrics_server_installed.stdout }}" ]; then
+#           helm install metrics-server metrics-server/metrics-server \
+#             --namespace kube-system \
+#             --set args={--kubelet-insecure-tls}
+#         else
+#           helm upgrade metrics-server metrics-server/metrics-server \
+#             --namespace kube-system \
+#             --set args={--kubelet-insecure-tls} || true
+#         fi
+#       ignore_errors: yes  # Ignore errors if the upgrade fails
+
+    
+
+#     - name: Get the CoreDNS ConfigMap
+#       k8s_info:
+#         kind: ConfigMap
+#         namespace: kube-system
+#         name: coredns
+#       register: coredns_cm
+
+#     - name: Modify the CoreDNS forward section
+#       set_fact:
+#         updated_corefile: "{{ coredns_cm.resources[0].data.Corefile | regex_replace('forward .+ {', 'forward . 172.18.0.2 8.8.8.8 8.8.4.4 {') }}"
+
+#     - name: Apply the updated CoreDNS ConfigMap
+#       k8s:
+#         state: present
+#         definition:
+#           apiVersion: v1
+#           kind: ConfigMap
+#           metadata:
+#             name: coredns
+#             namespace: kube-system
+#           data:
+#             Corefile: "{{ updated_corefile }}"
+
+
+#     - name: Apply Argo application configurations
+#       shell: |
+#         kubectl apply -f /home/dev/Argo/application0.yaml
+#         kubectl apply -f /home/dev/Argo/application1.yaml
+#         kubectl apply -f /home/dev/Argo/application2.yaml
+#         # kubectl apply -f /home/dev/Argo/application3.yaml
+#       args:
+#         chdir: "/home/dev/Argo"  # Set the working directory for better readability
+
+
+#     - name: Wait for 4 minutes
+#       pause:
+#         seconds: 240
+
+#     - name: Update NodePort for crm-service
+#       shell: |
+#         kubectl patch svc crm-service -n default \
+#           --type='json' \
+#           -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30301}]'
+#       register: update_crm_service
+#       ignore_errors: yes  # Ignore errors for debugging purposes
+
+#     - name: Check the updated crm-service details
+#       shell: kubectl get svc crm-service -n default
+#       register: crm_service_details
+
+#     - name: Display the crm-service details
+#       debug:
+#         var: crm_service_details.stdout
+        
+        
+    
+#     - name: Update NodePort for dms-service
+#       shell: |
+#         kubectl patch svc dms-service -n default \
+#           --type='json' \
+#           -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30302}]'
+#       register: update_dms_service
+#       ignore_errors: yes  # Ignore errors for debugging purposes
+
+#     - name: Check the updated dms-service details
+#       shell: kubectl get svc dms-service -n default
+#       register: dms_service_details
+
+#     - name: Display the dms-service details
+#       debug:
+#         var: dms_service_details.stdout
+
+    
+#     - name: Update NodePort for mongo-service
+#       shell: |
+#         kubectl patch svc mongo-service -n default \
+#           --type='json' \
+#           -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30303}]'
+#       register: update_mongo_service
+#       ignore_errors: yes  # Ignore errors for debugging purposes
+
+#     - name: Check the updated mongo-service details
+#       shell: kubectl get svc mongo-service -n default
+#       register: mongo_service_details
+
+#     - name: Display the mongo-service details
+#       debug:
+#         var: mongo_service_details.stdout
+        
+        
+        
+    
        
         
    
