@@ -313,29 +313,29 @@
 
     - name: Check the updated mongo-service details
       shell: kubectl get svc mongo-service -n default
-      register: mongo_service_details
+      register: service_service_details
 
     - name: Display the mongo-service details
       debug:
-        var: mongo_service_details.stdout    
+        var: service_service_details.stdout    
         
 
 
-    - name: Update NodePort for cloudflare-service
-      shell: |
-        kubectl patch svc cloudflare-service -n default \
-          --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30306}]'
-      register: update_cloudflare_service
-      ignore_errors: yes  # Ignore errors for debugging purposes
+    # - name: Update NodePort for cloudflare-service
+    #   shell: |
+    #     kubectl patch svc cloudflare-service -n default \
+    #       --type='json' \
+    #       -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30307}]'
+    #   register: update_cloudflare_service
+    #   ignore_errors: yes  # Ignore errors for debugging purposes
   
-    - name: Check the updated cloudflare-service details
-      shell: kubectl get svc cloudflare-service -n default
-      register: mongo_cloudflare_details
+    # - name: Check the updated cloudflare-service details
+    #   shell: kubectl get svc cloudflare-service -n default
+    #   register: mongo_cloudflare_details
   
-    - name: Display the cloudflare-service details
-      debug:
-        var: mongo_cloudflare_details.stdout     
+    # - name: Display the cloudflare-service details
+    #   debug:
+    #     var: mongo_cloudflare_details.stdout     
 
         
     - name: Update NodePort for semaphore-service
@@ -348,11 +348,11 @@
     
     - name: Check the updated semaphore-service details
       shell: kubectl get svc semaphore-service -n default
-      register: mongo_semaphore_details
+      register: service_semaphore_details
     
     - name: Display the semaphore-service details
       debug:
-        var: mongo_semaphore_details.stdout
+        var: service_semaphore_details.stdout
     
       
 
