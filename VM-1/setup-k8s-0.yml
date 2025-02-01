@@ -153,15 +153,15 @@
 
     - name: Apply MetalLB configurations
       shell: |
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/pool-1.yaml
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/l2advertisement.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-0/pool-0.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-0/l2advertisement.yaml
 
 
 
     - name: Apply Node Exporter configurations
       shell: |
-        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-1/node-exporter.yaml
-        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-1/node-exporter-service.yaml
+        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-0/node-exporter.yaml
+        kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-0/node-exporter-service.yaml
       args:
         chdir: "/home/dev/Kubernetes/Node-Exporter"  # Optional: Set the working directory if needed
       when: webhook_ready.rc == 0  # Ensure webhook is ready before applying Node Exporter configurations
@@ -215,11 +215,11 @@
         kubectl apply -f /home/dev/Argo-0/application0.yaml
         kubectl apply -f /home/dev/Argo-0/application1.yaml
         kubectl apply -f /home/dev/Argo-0/application2.yaml
-        kubectl apply -f /home/dev/Argo-1/application0.yaml
-        kubectl apply -f /home/dev/Argo-1/application1.yaml
-        kubectl apply -f /home/dev/Argo-1/application2.yaml
+        kubectl apply -f /home/dev/Argo-0/application3.yaml
+        kubectl apply -f /home/dev/Argo-0/application4.yaml
+        kubectl apply -f /home/dev/Argo-0/application5.yaml
       args:
-        chdir: "/home/dev/Argo-1" 
+        chdir: "/home/dev/Argo-0" 
       
   
 
