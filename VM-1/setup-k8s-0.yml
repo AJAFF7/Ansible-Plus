@@ -90,7 +90,7 @@
       shell: |
         kubectl patch svc ingress-nginx-controller -n ingress-nginx \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30500}, {"op": "replace", "path": "/spec/ports/1/nodePort", "value": 30600}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30400}, {"op": "replace", "path": "/spec/ports/1/nodePort", "value": 30500}]'
       register: update_nginx_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
@@ -163,7 +163,7 @@
         kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-0/node-exporter.yaml
         kubectl apply -f /home/dev/Kubernetes/Node-Exporter/Node-Exporter-0/node-exporter-service.yaml
       args:
-        chdir: "/home/dev/Kubernetes/Node-Exporter"  # Optional: Set the working directory if needed
+        chdir: "/home/dev/Kubernetes/Node-Exporter/Node-Exporter-0"  # Optional: Set the working directory if needed
       when: webhook_ready.rc == 0  # Ensure webhook is ready before applying Node Exporter configurations
 
     - name: Check if Metrics Server is already installed
