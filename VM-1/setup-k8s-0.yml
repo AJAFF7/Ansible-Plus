@@ -307,7 +307,7 @@
       shell: |
         kubectl patch svc mongo-service -n default \
           --type='json' \
-          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30304}]'
+          -p='[{"op": "replace", "path": "/spec/ports/0/nodePort", "value": 30305}]'
       register: update_mongo_service
       ignore_errors: yes  # Ignore errors for debugging purposes
 
