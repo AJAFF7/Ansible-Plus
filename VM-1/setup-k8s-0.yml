@@ -218,9 +218,9 @@
         kubectl apply -f /home/dev/Argo-0/application3.yaml
         kubectl apply -f /home/dev/Argo-0/application4.yaml
         kubectl apply -f /home/dev/Argo-0/application5.yaml
-        kubectl apply -f /home/dev/Argo-0/helm6/mysql.yaml
-        kubectl apply -f /home/dev/Argo-0/helm6/semaphore.yaml
-        kubectl apply -f /home/dev/Argo-0/helm6/semaphore-ingress.yaml
+        kubectl apply -f /home/dev/Argo-0/helm6/templates/mysql.yaml
+        kubectl apply -f /home/dev/Argo-0/helm6/templates/semaphore.yaml
+        kubectl apply -f /home/dev/Argo-0/helm6/templates/semaphore-ingress.yaml
 
       args:
         chdir: "/home/dev/Argo-0" 
