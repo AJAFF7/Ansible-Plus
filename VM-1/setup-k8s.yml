@@ -83,7 +83,7 @@
             --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
             --set-string controller.podAnnotations."prometheus\.io/port"="10254" \
             --set controller.metrics.service.type=NodePort \
-            --set controller.metrics.service.nodePort=30000
+            --set controller.metrics.service.nodePort=30300
         fi
 
     - name: Update NodePort for ingress-nginx-controller service
