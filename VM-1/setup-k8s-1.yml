@@ -153,8 +153,8 @@
 
     - name: Apply MetalLB configurations
       shell: |
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/pool-1.yaml
-        kubectl apply -f /home/dev/Kubernetes/MetaLLB/MetaLLB-1/l2advertisement.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/pool-1.yaml
+        kubectl apply -f /home/dev/Kubernetes/MetaLLB/l2advertisement.yaml
 
 
 
